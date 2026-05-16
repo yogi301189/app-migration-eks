@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    env_file: .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+
+  flask-api:
+    build: ./app
+    env_file: .env
+    depends_on:
+      - postgres
+    ports:
+      - "5000:5000"
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - flask-api
+
+volumes:
+  pgdata:
