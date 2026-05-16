@@ -15,7 +15,10 @@ def get_db():
 @app.route("/health")
 def health():
     return jsonify({"status": "healthy"})
-
+@app.route("/version")
+def version():
+    return jsonify({"version": "2.0", "deployed_by": "github-actions"})
+    
 @app.route("/users")
 def get_users():
     conn = get_db()
